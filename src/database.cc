@@ -158,13 +158,20 @@ void Database::Work_Open(uv_work_t* req) {
     );
 
     if (baton->status != SQLITE_OK) {
-        baton->message = std::string(sqlite3_errmsg(db->_handle));
-        sqlite3_close(db->_handle);
-        db->_handle = NULL;
+        if (db->_handle) {
+            baton->status = sqlite3_extended_errcode(db->_handle);
+            baton->message = std::string(sqlite3_errmsg(db->_handle));
+            sqlite3_close(db->_handle);
+            db->_handle = NULL;
+        }
+        else {
+            baton->message = std::string(sqlite3_errstr(baton->status));
+        }
     }
     else {
         // Set default database handle values.
         sqlite3_busy_timeout(db->_handle, 1000);
+        sqlite3_extended_result_codes(db->_handle, true);
     }
 }
 

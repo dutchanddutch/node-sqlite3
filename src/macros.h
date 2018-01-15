@@ -93,9 +93,14 @@ const char* sqlite_authorizer_string(int type);
         )                                                                      \
     );                                                                         \
     Local<Object> name ##_obj = name.As<Object>();                             \
-    Nan::Set(name ##_obj, Nan::New("errno").ToLocalChecked(), Nan::New(errno));\
+    Nan::Set(name ##_obj, Nan::New("exterrno").ToLocalChecked(),               \
+        Nan::New(errno));                                                      \
+    Nan::Set(name ##_obj, Nan::New("errno").ToLocalChecked(),                  \
+        Nan::New(errno & 0xff));                                               \
+    Nan::Set(name ##_obj, Nan::New("extcode").ToLocalChecked(),                \
+        Nan::New(sqlite_code_string(errno)).ToLocalChecked());                 \
     Nan::Set(name ##_obj, Nan::New("code").ToLocalChecked(),                   \
-        Nan::New(sqlite_code_string(errno)).ToLocalChecked());
+        Nan::New(sqlite_code_string(errno & 0xff)).ToLocalChecked());
 
 
 #define EMIT_EVENT(obj, argc, argv)                                            \
