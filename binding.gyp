@@ -1,10 +1,25 @@
 {
   "includes": [ "deps/common-sqlite.gypi" ],
+  "variables": {
+      "sqlite_libname%":"sqlite3"
+  },
   "targets": [
     {
       "target_name": "<(module_name)",
       "include_dirs": ["<!(node -e \"require('nan')\")"],
-      "libraries": [ "-lsqlite3" ],
+      "conditions": [
+        ["OS=='linux'", {
+            "libraries": [
+               "-l<(sqlite_libname)"
+            ]
+        },
+        {
+            "dependencies": [
+              "deps/sqlite3.gyp:sqlite3"
+            ]
+        }
+        ]
+      ],
       "sources": [
         "src/database.cc",
         "src/node_sqlite3.cc",
