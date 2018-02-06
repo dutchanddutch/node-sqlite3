@@ -3,6 +3,7 @@
   'target_defaults': {
     'default_configuration': 'Release',
     'cflags':[
+      '-Wno-implicit-fallthrough',
       '-std=c99'
     ],
     'configurations': {
