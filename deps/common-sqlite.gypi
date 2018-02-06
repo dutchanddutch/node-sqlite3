@@ -35,6 +35,9 @@
         'defines': [
           'NDEBUG'
         ],
+        'cflags_cc': [
+          '-Wno-deprecated-declarations'
+        ],
         'xcode_settings': {
           'OTHER_CPLUSPLUSFLAGS!': [
             '-Os',
