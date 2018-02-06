@@ -130,6 +130,7 @@ const char* sqlite_authorizer_string(int type);
     int status = uv_queue_work(uv_default_loop(),                              \
         &baton->request,                                                       \
         Work_##type, reinterpret_cast<uv_after_work_cb>(Work_After##type));    \
+    (void) status;                                                             \
     assert(status == 0);
 
 #define STATEMENT_INIT(type)                                                   \

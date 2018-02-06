@@ -117,6 +117,7 @@ void Statement::Work_BeginPrepare(Database::Baton* baton) {
     baton->db->pending++;
     int status = uv_queue_work(uv_default_loop(),
         &baton->request, Work_Prepare, (uv_after_work_cb)Work_AfterPrepare);
+    (void) status;
     assert(status == 0);
 }
 
